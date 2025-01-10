@@ -1,4 +1,5 @@
 import re
+import tiktoken
 
 TOKENIZER_SPLIT_REGEX = r'([,.:;?!_"\'()]|--|\s)'
 TOKENIZER_SUB_REGEX = r'\s+([,.?!"()\'])'
@@ -17,7 +18,7 @@ print("Vocabulary size:", vocab_size)
 
 vocab = {token:integer for integer, token in enumerate(unique_words)}
 for i, item in enumerate(vocab.items()):
-  print(item)
+  # print(item)
   if i >= 50:
     break
 
@@ -37,3 +38,7 @@ class Tokenizer:
     text = " ".join([self.int_to_str[i] for i in ids])
     text = re.sub(TOKENIZER_SUB_REGEX, r'\1', text)
     return text
+
+tokenizer = tiktoken.get_encoding("gpt2")  
+encoded_text = tokenizer.encode(raw_text)
+print(len(encoded_text))
