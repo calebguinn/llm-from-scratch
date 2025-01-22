@@ -71,7 +71,9 @@ class GELU(nn.Module):
     super().__init__()
 
   def forward(self, x):
-    return 0.5 * x * (1 + torch.tanh(torch.sqrt(torch.tensor(2.0/torch.pi))*(x+0.44715*torch.pow(x,3))))
+    return 0.5 * x * (1 + torch.tanh(
+      torch.sqrt(torch.tensor(2.0/torch.pi))*
+      (x + 0.044715 * torch.pow(x,3))))
 
 class FeedForward(nn.Module): 
   def __init__(self, config):
@@ -81,7 +83,7 @@ class FeedForward(nn.Module):
       GELU(),
       nn.Linear(4 * config["emb_dim"], config["emb_dim"])
     )
-  
+
   def forward(self, x):
     return self.layers(x)
 
@@ -106,7 +108,7 @@ class TransformerBlock(nn.Module):
     x = self.norm1(x)
     x = self.attn(x)
     x = self.drop_shortcut(x)
-    x + shortcut
+    x = x + shortcut
 
     shortcut = x
     x = self.norm2(x)
@@ -153,13 +155,13 @@ out = model(batch)
 # print(out)
 
 total_params = sum(p.numel() for p in model.parameters())
-print(f"Total number of parameters: {total_params:,}") #163,009,536, larger due to weight tying
+# print(f"Total number of parameters: {total_params:,}") #163,009,536, larger due to weight tying
 
 total_params_gpt2 = (
   total_params - sum(p.numel() for p in model.out_head.parameters())
 )
-print(f"Number of trainable parameters considering weight tying: {total_params_gpt2:,}") #124,412,160, the number of parameters in GPT 2
+# print(f"Number of trainable parameters considering weight tying: {total_params_gpt2:,}") #124,412,160, the number of parameters in GPT 2
 
 total_size_bytes = total_params * 4
 total_size_mb = total_size_bytes / (1024*1024)
-print(f"Total size of the model: {total_size_mb:.2f} MB")
+# print(f"Total size of the model: {total_size_mb:.2f} MB")

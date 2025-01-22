@@ -105,7 +105,7 @@ class TransformerBlock(nn.Module):
     x = self.norm1(x)
     x = self.attn(x)
     x = self.drop_shortcut(x)
-    x + shortcut
+    x = x + shortcut
 
     shortcut = x
     x = self.norm2(x)
