@@ -1,7 +1,7 @@
 import torch
 from torch import nn as nn
 import tiktoken
-from gpt import GPTModel,GPT_CONFIG_124M
+from gpt import GPTModel, GPT_CONFIG_124M
 
 def generate_text_simple(model, idx, max_new_tokens, context_size):
   for _ in range(max_new_tokens):
